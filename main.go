@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"github.com/blackhorseya/patrick/cmd"
 )
 
 func main() {
-	fmt.Println("Hello world")
+	cmd.Execute()
 }
