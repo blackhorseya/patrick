@@ -39,7 +39,12 @@ func (p *Info) Create() error {
 		return err
 	}
 
-	// todo: 2022/9/22|sean|create gitignore
+	// create .gitignore
+	err = p.createFileFromTemplate(".gitignore", tpl.GitignoreTemplate())
+	if err != nil {
+		return err
+	}
+
 	// todo: 2022/9/22|sean|create .golangci.yaml
 	// todo: 2022/9/22|sean|create standard project layout folders
 	// todo: 2022/9/22|sean|create scripts/go.test.sh
@@ -51,7 +56,14 @@ func (p *Info) Create() error {
 }
 
 func (p *Info) createFileFromTemplate(name string, body []byte) error {
-	file, err := os.Create(fmt.Sprintf("%s/%s", p.AbsolutePath, name))
+	path := fmt.Sprintf("%s/%s", p.AbsolutePath, name)
+
+	_, err := os.Stat(path)
+	if !os.IsNotExist(err) {
+		return nil
+	}
+
+	file, err := os.Create(path)
 	if err != nil {
 		return err
 	}
