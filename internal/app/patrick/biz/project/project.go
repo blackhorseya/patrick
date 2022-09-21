@@ -1,7 +1,7 @@
 package project
 
 import (
-	"github.com/blackhorseya/patrick/pkg/entity/project"
+	"github.com/blackhorseya/patrick/internal/pkg/entity/project"
 	"github.com/google/wire"
 )
 

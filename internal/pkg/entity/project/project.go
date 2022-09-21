@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"os"
 
-	"github.com/blackhorseya/patrick/pkg/tpl"
+	tpl2 "github.com/blackhorseya/patrick/internal/pkg/tpl"
 )
 
 // Info define a project information
@@ -28,11 +28,11 @@ func (p *Info) Create() error {
 	fmt.Println("Starting create project...")
 
 	filesMap := map[string][]byte{
-		"Makefile":                tpl.MakefileTemplate(),
-		".gitignore":              tpl.GitignoreTemplate(),
-		".golangci.yaml":          tpl.GolangCITemplate(),
-		".pre_commit_config.yaml": tpl.PreCommitConfigTemplate(),
-		".cz.yaml":                tpl.CZTemplate(),
+		"Makefile":                tpl2.MakefileTemplate(),
+		".gitignore":              tpl2.GitignoreTemplate(),
+		".golangci.yaml":          tpl2.GolangCITemplate(),
+		".pre_commit_config.yaml": tpl2.PreCommitConfigTemplate(),
+		".cz.yaml":                tpl2.CZTemplate(),
 	}
 
 	for name, body := range filesMap {
