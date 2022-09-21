@@ -27,25 +27,26 @@ func (p *Info) Create() error {
 
 	fmt.Println("Starting create project...")
 
-	// create Makefile
 	err := p.createFileFromTemplate("Makefile", tpl.MakefileTemplate())
 	if err != nil {
 		return err
 	}
 
-	// create main.go
 	err = p.createFileFromTemplate("main.go", tpl.MainTemplate())
 	if err != nil {
 		return err
 	}
 
-	// create .gitignore
 	err = p.createFileFromTemplate(".gitignore", tpl.GitignoreTemplate())
 	if err != nil {
 		return err
 	}
 
-	// todo: 2022/9/22|sean|create .golangci.yaml
+	err = p.createFileFromTemplate(".golangci.yaml", tpl.GolangCITemplate())
+	if err != nil {
+		return err
+	}
+
 	// todo: 2022/9/22|sean|create standard project layout folders
 	// todo: 2022/9/22|sean|create scripts/go.test.sh
 	// todo: 2022/9/22|sean|create .pre-commit-config.yaml
