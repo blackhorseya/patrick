@@ -32,6 +32,7 @@ func (p *Info) Create() error {
 		".gitignore":              tpl.GitignoreTemplate(),
 		".golangci.yaml":          tpl.GolangCITemplate(),
 		".pre_commit_config.yaml": tpl.PreCommitConfigTemplate(),
+		".cz.yaml":                tpl.CZTemplate(),
 	}
 
 	for name, body := range filesMap {
