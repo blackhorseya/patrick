@@ -12,6 +12,13 @@ clean: ## clean artifacts
 	@rm -rf bin charts coverage.txt profile.out
 	@echo Successfully removed artifacts
 
+.PHONY: update-package
+update-package: ## update package and commit
+	@go get -u ./...
+	@go mod tidy
+	@git add go.mod go.sum
+	@git commit -m "build: update package"
+
 .PHONY: lint
 lint: ## execute golint
 	@golangci-lint run ./... -c .golangci.yaml
@@ -35,10 +42,3 @@ gen-pb: ## generate protobuf messages and services
 .PHONY: gen-mocks
 gen-mocks: ## generate mocks code via mockery
 	@go generate -tags=wireinject -x ./...
-
-.PHONY: update-package
-update-package: ## update package and commit
-	@go get -u ./...
-	@go mod tidy
-	@git add go.mod go.sum
-	@git commit -m "build: update package"
