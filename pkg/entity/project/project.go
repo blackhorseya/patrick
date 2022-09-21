@@ -28,14 +28,13 @@ func (p *Info) Create() error {
 	fmt.Println("Starting create project...")
 
 	// create Makefile
-	makeFile, err := os.Create(fmt.Sprintf("%s/Makefile", p.AbsolutePath))
+	err := p.createFileFromTemplate("Makefile", tpl.MakefileTemplate())
 	if err != nil {
 		return err
 	}
-	defer makeFile.Close()
 
-	makefileTemplate := template.Must(template.New("Makefile").Parse(string(tpl.MakefileTemplate())))
-	err = makefileTemplate.Execute(makeFile, p)
+	// create main.go
+	err = p.createFileFromTemplate("main.go", tpl.MainTemplate())
 	if err != nil {
 		return err
 	}
@@ -47,6 +46,21 @@ func (p *Info) Create() error {
 	// todo: 2022/9/22|sean|create .pre-commit-config.yaml
 	// todo: 2022/9/22|sean|create .cz.yaml
 	// todo: 2022/9/22|sean|create Dockerfile
+
+	return nil
+}
+
+func (p *Info) createFileFromTemplate(name string, body []byte) error {
+	file, err := os.Create(fmt.Sprintf("%s/%s", p.AbsolutePath, name))
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	err = template.Must(template.New(name).Parse(string(body))).Execute(file, p)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
