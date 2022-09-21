@@ -27,31 +27,25 @@ func (p *Info) Create() error {
 
 	fmt.Println("Starting create project...")
 
-	err := p.createFileFromTemplate("Makefile", tpl.MakefileTemplate())
-	if err != nil {
-		return err
+	filesMap := map[string][]byte{
+		"Makefile":                tpl.MakefileTemplate(),
+		".gitignore":              tpl.GitignoreTemplate(),
+		".golangci.yaml":          tpl.GolangCITemplate(),
+		".pre_commit_config.yaml": tpl.PreCommitConfigTemplate(),
 	}
 
-	err = p.createFileFromTemplate("main.go", tpl.MainTemplate())
-	if err != nil {
-		return err
+	for name, body := range filesMap {
+		err := p.createFileFromTemplate(name, body)
+		if err != nil {
+			return err
+		}
 	}
 
-	err = p.createFileFromTemplate(".gitignore", tpl.GitignoreTemplate())
-	if err != nil {
-		return err
-	}
-
-	err = p.createFileFromTemplate(".golangci.yaml", tpl.GolangCITemplate())
-	if err != nil {
-		return err
-	}
-
-	// todo: 2022/9/22|sean|create standard project layout folders
-	// todo: 2022/9/22|sean|create scripts/go.test.sh
 	// todo: 2022/9/22|sean|create .pre-commit-config.yaml
 	// todo: 2022/9/22|sean|create .cz.yaml
 	// todo: 2022/9/22|sean|create Dockerfile
+	// todo: 2022/9/22|sean|create standard project layout folders
+	// todo: 2022/9/22|sean|create scripts/go.test.sh
 
 	return nil
 }
