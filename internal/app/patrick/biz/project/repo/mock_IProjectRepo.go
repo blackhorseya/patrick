@@ -9,13 +9,13 @@ type MockIProjectRepo struct {
 	mock.Mock
 }
 
-// WriteFile provides a mock function with given fields: path, body, overwrite
-func (_m *MockIProjectRepo) WriteFile(path string, body []byte, overwrite bool) error {
-	ret := _m.Called(path, body, overwrite)
+// WriteFile provides a mock function with given fields: filePath, tpl, data, overwrite
+func (_m *MockIProjectRepo) WriteFile(filePath string, tpl []byte, data interface{}, overwrite bool) error {
+	ret := _m.Called(filePath, tpl, data, overwrite)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(string, []byte, bool) error); ok {
-		r0 = rf(path, body, overwrite)
+	if rf, ok := ret.Get(0).(func(string, []byte, interface{}, bool) error); ok {
+		r0 = rf(filePath, tpl, data, overwrite)
 	} else {
 		r0 = ret.Error(0)
 	}
