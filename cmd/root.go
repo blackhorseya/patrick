@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/blackhorseya/patrick/internal/pkg/consts"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -42,9 +43,9 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", fmt.Sprintf("config file (default is $HOME/.%s.yaml)", AppName))
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", fmt.Sprintf("config file (default is $HOME/.%s.yaml)", consts.AppName))
 
-	rootCmd.Version = Version
+	rootCmd.Version = consts.Version
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -62,7 +63,7 @@ func initConfig() {
 
 		// Search config in home directory with name ".cli" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName("." + AppName)
+		viper.SetConfigName("." + consts.AppName)
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

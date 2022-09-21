@@ -1,4 +1,4 @@
-package cmd
+package consts
 
 const (
 	// AppName define app name
