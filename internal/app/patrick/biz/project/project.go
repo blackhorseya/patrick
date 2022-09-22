@@ -1,6 +1,7 @@
 package project
 
 import (
+	"github.com/blackhorseya/patrick/internal/app/patrick/biz/project/repo"
 	"github.com/blackhorseya/patrick/internal/pkg/entity/project"
 	"github.com/google/wire"
 )
@@ -14,4 +15,4 @@ type IProjectBiz interface {
 }
 
 // ProviderSet is a provider set for wire
-var ProviderSet = wire.NewSet()
+var ProviderSet = wire.NewSet(NewImpl, repo.ProviderSet)
