@@ -30,19 +30,13 @@ One can generate golang project template and function`,
 
 // NewRootCmd return *cobra.Command
 func NewRootCmd() (*cobra.Command, error) {
-	return rootCmd, nil
-}
-
-func init() {
 	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", fmt.Sprintf("config file (default is $HOME/.%s.yaml)", consts.AppName))
 
 	rootCmd.Version = consts.Version
+
+	return rootCmd, nil
 }
 
 // initConfig reads in config file and ENV variables if set.
