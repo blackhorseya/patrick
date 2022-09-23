@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"go.uber.org/zap"
 )
 
 const (
@@ -19,9 +18,7 @@ type SuiteTest struct {
 }
 
 func (s *SuiteTest) SetupTest() {
-	logger, _ := zap.NewDevelopment()
-
-	repo, err := CreateRepo(logger)
+	repo, err := CreateRepo()
 	if err != nil {
 		panic(err)
 	}

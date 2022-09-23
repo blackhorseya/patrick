@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/blackhorseya/patrick/internal/app/patrick/biz/project"
 	"github.com/blackhorseya/patrick/internal/pkg/consts"
 	"github.com/google/wire"
 	"github.com/mitchellh/go-homedir"
@@ -11,7 +12,10 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+var (
+	cfgFile    string
+	projectBiz project.IProjectBiz
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -29,7 +33,9 @@ One can generate golang project template and function`,
 }
 
 // NewRootCmd return *cobra.Command
-func NewRootCmd() (*cobra.Command, error) {
+func NewRootCmd(biz project.IProjectBiz) (*cobra.Command, error) {
+	projectBiz = biz
+
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", fmt.Sprintf("config file (default is $HOME/.%s.yaml)", consts.AppName))

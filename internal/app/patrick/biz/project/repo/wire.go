@@ -4,11 +4,10 @@ package repo
 
 import (
 	"github.com/google/wire"
-	"go.uber.org/zap"
 )
 
 var testProviderSet = wire.NewSet(NewImpl)
 
-func CreateRepo(logger *zap.Logger) (IProjectRepo, error) {
+func CreateRepo() (IProjectRepo, error) {
 	panic(wire.Build(testProviderSet))
 }

@@ -9,7 +9,8 @@ package main
 import (
 	"github.com/blackhorseya/patrick/internal/app/patrick/api/cmd"
 	"github.com/blackhorseya/patrick/internal/app/patrick/biz"
-	"github.com/blackhorseya/patrick/internal/pkg/infra/log"
+	"github.com/blackhorseya/patrick/internal/app/patrick/biz/project"
+	"github.com/blackhorseya/patrick/internal/app/patrick/biz/project/repo"
 	"github.com/google/wire"
 	"github.com/spf13/cobra"
 )
@@ -17,7 +18,9 @@ import (
 // Injectors from wire.go:
 
 func CreateApp() (*cobra.Command, error) {
-	command, err := cmd.NewRootCmd()
+	iProjectRepo := repo.NewImpl()
+	iProjectBiz := project.NewImpl(iProjectRepo)
+	command, err := cmd.NewRootCmd(iProjectBiz)
 	if err != nil {
 		return nil, err
 	}
@@ -26,4 +29,4 @@ func CreateApp() (*cobra.Command, error) {
 
 // wire.go:
 
-var providerSet = wire.NewSet(log.ProviderSet, cmd.ProviderSet, biz.ProviderSet)
+var providerSet = wire.NewSet(cmd.ProviderSet, biz.ProviderSet)

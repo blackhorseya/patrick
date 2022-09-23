@@ -4,26 +4,24 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/blackhorseya/gocommon/pkg/contextx"
 	"github.com/blackhorseya/patrick/internal/app/patrick/biz/project/repo"
 	"github.com/blackhorseya/patrick/internal/pkg/entity/project"
 	"github.com/blackhorseya/patrick/internal/pkg/tpl"
-	"go.uber.org/zap"
 )
 
 type impl struct {
-	logger *zap.Logger
-	repo   repo.IProjectRepo
+	repo repo.IProjectRepo
 }
 
 // NewImpl return IProjectBiz
-func NewImpl(logger *zap.Logger, repo repo.IProjectRepo) IProjectBiz {
+func NewImpl(repo repo.IProjectRepo) IProjectBiz {
 	return &impl{
-		logger: logger.With(zap.String("type", "ProjectBiz")),
-		repo:   repo,
+		repo: repo,
 	}
 }
 
-func (i *impl) InitProject(prj *project.Info) error {
+func (i *impl) InitProject(ctx contextx.Contextx, prj *project.Info) error {
 	// check if AbsolutePath exists
 	if _, err := os.Stat(prj.AbsolutePath); os.IsNotExist(err) {
 		// create directory
@@ -33,7 +31,8 @@ func (i *impl) InitProject(prj *project.Info) error {
 		}
 	}
 
-	i.logger.Info("Starting create project...")
+	// todo: 2022/9/24|sean|impl me
+	// ctx.Info("Starting create project...")
 
 	filesMap := map[string][]byte{
 		"Makefile":                tpl.MakefileTemplate(),

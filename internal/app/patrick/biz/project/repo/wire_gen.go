@@ -8,13 +8,12 @@ package repo
 
 import (
 	"github.com/google/wire"
-	"go.uber.org/zap"
 )
 
 // Injectors from wire.go:
 
-func CreateRepo(logger *zap.Logger) (IProjectRepo, error) {
-	iProjectRepo := NewImpl(logger)
+func CreateRepo() (IProjectRepo, error) {
+	iProjectRepo := NewImpl()
 	return iProjectRepo, nil
 }
 

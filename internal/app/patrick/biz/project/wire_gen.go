@@ -9,13 +9,12 @@ package project
 import (
 	"github.com/blackhorseya/patrick/internal/app/patrick/biz/project/repo"
 	"github.com/google/wire"
-	"go.uber.org/zap"
 )
 
 // Injectors from wire.go:
 
-func CreateBiz(logger *zap.Logger, repo2 repo.IProjectRepo) (IProjectBiz, error) {
-	iProjectBiz := NewImpl(logger, repo2)
+func CreateBiz(repo2 repo.IProjectRepo) (IProjectBiz, error) {
+	iProjectBiz := NewImpl(repo2)
 	return iProjectBiz, nil
 }
 

@@ -6,7 +6,6 @@ import (
 	"github.com/blackhorseya/patrick/internal/app/patrick/biz/project/repo"
 	"github.com/blackhorseya/patrick/internal/pkg/entity/project"
 	"github.com/stretchr/testify/suite"
-	"go.uber.org/zap"
 )
 
 type SuiteTest struct {
@@ -16,10 +15,9 @@ type SuiteTest struct {
 }
 
 func (s *SuiteTest) SetupTest() {
-	logger, _ := zap.NewDevelopment()
 	s.repo = new(repo.MockIProjectRepo)
 
-	biz, err := CreateBiz(logger, s.repo)
+	biz, err := CreateBiz(s.repo)
 	if err != nil {
 		panic(err)
 	}

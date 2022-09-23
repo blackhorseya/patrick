@@ -4,19 +4,14 @@ import (
 	"html/template"
 	"os"
 	"path"
-
-	"go.uber.org/zap"
 )
 
 type impl struct {
-	logger *zap.Logger
 }
 
 // NewImpl return IProjectRepo
-func NewImpl(logger *zap.Logger) IProjectRepo {
-	return &impl{
-		logger: logger.With(zap.String("type", "ProjectRepo")),
-	}
+func NewImpl() IProjectRepo {
+	return &impl{}
 }
 
 func (i *impl) WriteFile(filePath string, tpl []byte, data any, overwrite bool) error {
