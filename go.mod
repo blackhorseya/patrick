@@ -3,6 +3,7 @@ module github.com/blackhorseya/patrick
 go 1.19
 
 require (
+	github.com/blackhorseya/gocommon v0.0.0-20220301084507-880eb54fda83
 	github.com/google/wire v0.5.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.5.0
