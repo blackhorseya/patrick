@@ -31,7 +31,6 @@ func (i *impl) InitProject(ctx contextx.Contextx, prj *project.Info) error {
 		}
 	}
 
-	// todo: 2022/9/24|sean|impl me
 	// ctx.Info("Starting create project...")
 
 	filesMap := map[string][]byte{
