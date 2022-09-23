@@ -1,3 +1,5 @@
+APP_NAME=patrick
+
 .PHONY: check-%
 check-%: ## check environment variable is exists
 	@if [ -z '${${*}}' ]; then echo 'Environment variable $* not set' && exit 1; fi
@@ -22,6 +24,10 @@ update-package: ## update package and commit
 .PHONY: lint
 lint: ## execute golint
 	@golangci-lint run ./... -c .golangci.yaml
+
+.PHONY: report
+report: ## execute goreportcard
+	@curl -XPOST 'https://goreportcard.com/checks' --data 'repo=github.com/blackhorseya/$(APP_NAME)'
 
 .PHONY: test-unit
 test-unit: ## execute unit test
