@@ -13,7 +13,10 @@ import (
 )
 
 var (
-	cfgFile    string
+	cfgFile string
+	level   string
+	output  string
+
 	projectBiz project.IProjectBiz
 )
 
@@ -39,6 +42,8 @@ func NewRootCmd(biz project.IProjectBiz) (*cobra.Command, error) {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", fmt.Sprintf("config file (default is $HOME/.%s.yaml)", consts.AppName))
+	rootCmd.PersistentFlags().StringVar(&level, "log-level", "info", "log level")
+	rootCmd.PersistentFlags().StringVarP(&output, "output", "o", "console", "output style [console, json]")
 
 	rootCmd.Version = consts.Version
 
