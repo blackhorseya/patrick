@@ -10,9 +10,41 @@ Patrick provides its own program that will create your application.
 
 - [Patrick](#patrick)
   - [Installation](#installation)
+  - [Usage](#usage)
 
 ## Installation
 
 ```shell
 go install github.com/blackhorseya/patrick/cmd/patrick@latest
+```
+
+## Usage
+
+First, you can show help the following command.
+
+```shell
+patrick -h
+```
+
+### patrick init
+
+The `patrick init [app name]` command will create your initial application code for you.
+
+#### Initializing a module
+
+**If you already have a module, skip this step**
+
+If you want to initialize a new Go module:
+
+1. Create new directory
+2. `cd` into that directory
+3. run `go mod init <MOD_NAME>`
+
+e.g.
+
+```shell
+cd $HOME/project
+mkdir myapp
+cd myapp
+go mod init github.com/blackhorseya/myapp
 ```
