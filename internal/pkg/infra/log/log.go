@@ -3,41 +3,19 @@ package log
 import (
 	"os"
 
-	"github.com/google/wire"
-	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-// Options declare log's configuration
-type Options struct {
-	Level    string
-	Encoding string
-}
-
-// NewOptions serve caller to create Options
-func NewOptions(v *viper.Viper) (*Options, error) {
-	var (
-		err error
-		o   = new(Options)
-	)
-
-	if err = v.UnmarshalKey("log", o); err != nil {
-		return nil, err
-	}
-
-	return o, nil
-}
-
 // New serve caller to create zap.Logger
-func New(o *Options) (*zap.Logger, error) {
+func New(logLevel string, output string) (*zap.Logger, error) {
 	var (
 		err    error
 		level  = zap.NewAtomicLevel()
 		logger *zap.Logger
 	)
 
-	err = level.UnmarshalText([]byte(o.Level))
+	err = level.UnmarshalText([]byte(logLevel))
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +24,7 @@ func New(o *Options) (*zap.Logger, error) {
 	config := zap.NewDevelopmentEncoderConfig()
 	config.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	enc := zapcore.NewConsoleEncoder(config)
-	if o.Encoding == "json" {
+	if output == "json" {
 		config = zap.NewProductionEncoderConfig()
 		config.EncodeTime = zapcore.RFC3339NanoTimeEncoder
 		enc = zapcore.NewJSONEncoder(config)
@@ -60,6 +38,3 @@ func New(o *Options) (*zap.Logger, error) {
 
 	return logger, nil
 }
-
-// ProviderSet is a provider set for wire
-var ProviderSet = wire.NewSet(New, NewOptions)
