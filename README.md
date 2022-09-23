@@ -5,6 +5,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/blackhorseya/patrick)](https://goreportcard.com/report/github.com/blackhorseya/patrick)
 [![Go Reference](https://pkg.go.dev/badge/github.com/blackhorseya/patrick)](https://pkg.go.dev/github.com/blackhorseya/patrick)
 [![Release](https://img.shields.io/github/release/blackhorseya/patrick)](https://github.com/blackhorseya/patrick/releases/latest)
+[![GitHub license](https://img.shields.io/github/license/blackhorseya/patrick)](https://github.com/blackhorseya/patrick/blob/main/LICENSE)
 
 Patrick provides its own program that will create your application.
 
