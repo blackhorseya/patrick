@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -29,7 +30,10 @@ var initCmd = &cobra.Command{
 		ctx := contextx.BackgroundWithLogger(logger)
 
 		projectPath, err := initializeProject(ctx, args)
-		cobra.CheckErr(err)
+		if err != nil {
+			ctx.Error(err.Error())
+			os.Exit(1)
+		}
 
 		ctx.Info("Your Cobra application is ready at", zap.String("path", projectPath))
 	},
@@ -61,7 +65,10 @@ func initializeProject(ctx contextx.Contextx, args []string) (string, error) {
 		}
 	}
 
-	modName := getModImportPath()
+	modName, err := getModImportPath()
+	if err != nil {
+		return "", err
+	}
 
 	prj := &project.Info{
 		AbsolutePath: wd,
@@ -77,9 +84,13 @@ func initializeProject(ctx contextx.Contextx, args []string) (string, error) {
 	return prj.AbsolutePath, nil
 }
 
-func getModImportPath() string {
-	mod, cd := parseModInfo()
-	return path.Join(mod.Path, fileToURL(strings.TrimPrefix(cd.Dir, mod.Dir)))
+func getModImportPath() (string, error) {
+	mod, cd, err := parseModInfo()
+	if err != nil {
+		return "", err
+	}
+
+	return path.Join(mod.Path, fileToURL(strings.TrimPrefix(cd.Dir, mod.Dir))), nil
 }
 
 func fileToURL(in string) string {
@@ -87,22 +98,34 @@ func fileToURL(in string) string {
 	return path.Join(i...)
 }
 
-func parseModInfo() (Mod, CurDir) {
+func parseModInfo() (Mod, CurDir, error) {
 	var mod Mod
 	var dir CurDir
 
-	m := modInfoJSON("-m")
-	cobra.CheckErr(json.Unmarshal(m, &mod))
+	m, err := modInfoJSON("-m")
+	if err != nil {
+		return Mod{}, CurDir{}, err
+	}
+	err = json.Unmarshal(m, &mod)
+	if err != nil {
+		return Mod{}, CurDir{}, err
+	}
 
 	// Unsure why, but if no module is present Path is set to this string.
 	if mod.Path == "command-line-arguments" {
-		cobra.CheckErr("Please run `go mod init <MODNAME>` before `patrick init`")
+		return Mod{}, CurDir{}, errors.New("please run `go mod init <MODNAME>` before `patrick init`")
 	}
 
-	e := modInfoJSON("-e")
-	cobra.CheckErr(json.Unmarshal(e, &dir))
+	e, err := modInfoJSON("-e")
+	if err != nil {
+		return Mod{}, CurDir{}, err
+	}
+	err = json.Unmarshal(e, &dir)
+	if err != nil {
+		return Mod{}, CurDir{}, err
+	}
 
-	return mod, dir
+	return mod, dir, nil
 }
 
 type Mod struct {
@@ -117,10 +140,17 @@ func goGet(mod string) error {
 	return exec.Command("go", "get", mod).Run()
 }
 
-func modInfoJSON(args ...string) []byte {
+func modInfoJSON(args ...string) ([]byte, error) {
+	err := os.Setenv("GO111MODULE", "on")
+	if err != nil {
+		return nil, err
+	}
+
 	cmdArgs := append([]string{"list", "-json"}, args...)
 	out, err := exec.Command("go", cmdArgs...).Output()
-	cobra.CheckErr(err)
+	if err != nil {
+		return nil, err
+	}
 
-	return out
+	return out, nil
 }
