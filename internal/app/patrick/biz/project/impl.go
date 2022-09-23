@@ -31,7 +31,7 @@ func (i *impl) InitProject(ctx contextx.Contextx, prj *project.Info) error {
 		}
 	}
 
-	// ctx.Info("Starting create project...")
+	ctx.Info("Starting create project...")
 
 	filesMap := map[string][]byte{
 		"Makefile":                tpl.MakefileTemplate(),
