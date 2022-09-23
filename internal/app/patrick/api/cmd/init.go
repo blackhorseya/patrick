@@ -9,8 +9,11 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/blackhorseya/gocommon/pkg/contextx"
 	"github.com/blackhorseya/patrick/internal/pkg/entity/project"
+	"github.com/blackhorseya/patrick/internal/pkg/infra/log"
 	"github.com/spf13/cobra"
+	"go.uber.org/zap"
 )
 
 // initCmd represents the init command
@@ -20,12 +23,15 @@ var initCmd = &cobra.Command{
 	Short:   "Initialize a Project",
 	Long:    `Initialize a Project`,
 	Run: func(cmd *cobra.Command, args []string) {
-		projectPath, err := initializeProject(args)
+		logger, err := log.New(level, output)
 		cobra.CheckErr(err)
 
-		// todo: 2022/9/22|sean|impl me
+		ctx := contextx.BackgroundWithLogger(logger)
 
-		fmt.Printf("Your Cobra application is ready at\n%s\n", projectPath)
+		projectPath, err := initializeProject(ctx, args)
+		cobra.CheckErr(err)
+
+		ctx.Info("Your Cobra application is ready at", zap.String("path", projectPath))
 	},
 }
 
@@ -43,7 +49,7 @@ func init() {
 	// initCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func initializeProject(args []string) (string, error) {
+func initializeProject(ctx contextx.Contextx, args []string) (string, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return "", err
@@ -63,7 +69,7 @@ func initializeProject(args []string) (string, error) {
 		AppName:      path.Base(modName),
 	}
 
-	err = prj.Create()
+	err = projectBiz.InitProject(ctx, prj)
 	if err != nil {
 		return "", err
 	}
